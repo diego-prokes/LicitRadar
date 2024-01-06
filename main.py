@@ -14,10 +14,17 @@ def main():
     feed = feedparser.parse(rss_content)
 
     # Lista para almacenar las licitaciones que cumplen con ciertas keywords
-    licitaciones_interesantes = []
+    licitaciones = []
 
-    # Keywords a buscar en el título o comprador
-    keywords = ["servicio", "vigilancia", "seguridad"]
+    # Keywords a buscar en el título y descripción
+    keywords = ['aseo clínico', 'aseo industrial', 'bpo', 'candidatos', 'career', 'célula ágil', 'células ágiles',
+                'cleaning and disinfection', 'desinfección', 'est', 'excel', 'externalización', 'facility', 'guardias' 'hr',
+                'headhunting', 'help desk', 'industrial cleaning', 'it professionals', 'job', 'limpieza y desinfección',
+                'limpieza industrial', 'mantenimiento menor', 'mesa de ayuda', 'mesas de ayuda', 'nivelación', 'outsourcing',
+                'placement', 'profesional', 'profesionales it', 'psicolaboral', 'psychometrics', 'reclutamiento', 'recruitment',
+                'selección', 'servicio temporal', 'servicios temporales', 'servicios transitorios', 'sac', 'seguridad física',
+                'soporte', 'staffing', 'talent', 'talent acquisition', 'temporary', 'test de evaluación', 'training',
+                'training programs']
 
     # Iterar sobre los elementos del feed
     for item in feed.entries:
@@ -25,47 +32,37 @@ def main():
         description = item.description
         link = item.link
         published = item.published
+        appearing_keywords = []
+        for keyword in keywords:
+            if keyword.lower() in title.lower() or keyword.lower() in description.lower():
+                appearing_keywords.append(keyword)
+        licitacion = {
+            "Id": title.split(" ")[1],
+            "Titulo": ' '.join(title.split(" ")[3:]).lower(),
+            "Comprador": description.lower().split("<br />")[0][11:],
+            "Descripcion": description.lower().split("<br />")[1][13:],
+            "Publicacion": published.split("T")[0],
+            "Url": link,
+            "Keywords": ', '.join(appearing_keywords),
+        }
+        licitaciones.append(licitacion)
 
-        # Verificar si alguna keyword está en el título o comprador
-        if any(keyword.lower() in title.lower() or keyword.lower() in description.lower() for keyword in keywords):
-            # Guardar la información de la licitación
-            licitacion = {
-                "Id": title.split(" ")[1],
-                "Titulo": ' '.join(title.split(" ")[3:]).lower(),
-                "Comprador": description.lower().split("<br />")[0][11:],
-                "Descripcion": description.lower().split("<br />")[1][13:],
-                "Publicacion": published.split("T")[0],
-                "Url": link
-            }
-            licitaciones_interesantes.append(licitacion)
-
-    # Imprimir las licitaciones que cumplen con las keywords
-    for licitacion in licitaciones_interesantes:
+    # Imprimir las licitaciones 
+    for licitacion in licitaciones:
         print("Id           :\t", licitacion["Id"])
         print("Titulo       :\t", licitacion["Titulo"])
         print("Comprador    :\t", licitacion["Comprador"])
         print("Descripcion  :\t", licitacion["Descripcion"])
         print("Publicacion  :\t", licitacion["Publicacion"])
         print("Url          :\t", licitacion["Url"])
+        print("Keywords     :\t", licitacion["Keywords"])
         print()
 
-    
-    # (Aquí iría el código para enviar las licitaciones a SharePoint)
-    
-    # Keywords (filtro)
-    keywords = ['Hunting' , 'headhunting', 'Reclutamiento'  , 'Selección' , 'Test de Evaluación' ,
-                'psicolabolares', 'psicolaboral' , 'Servicios temporales', 'servicio temporal' , 'Servicios Transitorios' ,
-                'BPO' , 'EST'  , 'Outsourcing', 'Facility' , 'Seguridad Física' , 'aseo' , 'Mesas de ayuda',
-                'Mesa de ayuda' , 'Células ágiles', 'Célula ágil' , 'Staffing' , 'Profesionales IT', 'Profesionales TI',
-                'Externalización', 'Talento', 'personal', 'candidatos', 'psimétricas', 'psicolaborales', 'temporal', 
-                'temporary', 'facilities', 'limpieza', 'recruitment', 'talent', 'talent acquisition', 'job', 
-                'placement', 'career', 'HR', 'capacitaciones', 
-                'nivelación', 'excel', 'ofimática', 'mesa de ayuda', 'soporte', 'SAC', 'Limpieza y desinfección', 
-                'Aseo industrial', 'Aseo clínico' , 'mantención menor']
 
-    keywords = [keyword.lower() for keyword in keywords]
 
-    # print(keywords)
+
+    
+    # Aquí va el código para enviar las licitaciones a SharePoint
 
     # send to sharepoint process
     from decouple import config
@@ -107,10 +104,12 @@ def main():
 
     # actualizo la lista
 
-    print(licitaciones_interesantes)
 
-    if licitaciones_interesantes != []:
-        list.UpdateListItems(data=licitaciones_interesantes, kind="New")
+
+    # print(licitaciones_interesantes)
+
+    if licitaciones != []:
+        list.UpdateListItems(data=licitaciones, kind="New")
     else:
         print("No hay licitaciones interesantes")
 
