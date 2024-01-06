@@ -51,6 +51,22 @@ def main():
 
     
     # (Aquí iría el código para enviar las licitaciones a SharePoint)
+    
+    # Keywords (filtro)
+    keywords = ['Hunting' , 'headhunting', 'Reclutamiento'  , 'Selección' , 'Test de Evaluación' ,
+                'psicolabolares', 'psicolaboral' , 'Servicios temporales', 'servicio temporal' , 'Servicios Transitorios' ,
+                'BPO' , 'EST'  , 'Outsourcing', 'Facility' , 'Seguridad Física' , 'aseo' , 'Mesas de ayuda',
+                'Mesa de ayuda' , 'Células ágiles', 'Célula ágil' , 'Staffing' , 'Profesionales IT', 'Profesionales TI',
+                'Externalización', 'Talento', 'personal', 'candidatos', 'psimétricas', 'psicolaborales', 'temporal', 
+                'temporary', 'facilities', 'limpieza', 'recruitment', 'talent', 'talent acquisition', 'job', 
+                'placement', 'career', 'HR', 'capacitaciones', 
+                'nivelación', 'excel', 'ofimática', 'mesa de ayuda', 'soporte', 'SAC', 'Limpieza y desinfección', 
+                'Aseo industrial', 'Aseo clínico' , 'mantención menor']
+
+    keywords = [keyword.lower() for keyword in keywords]
+
+    # print(keywords)
+
     # send to sharepoint process
     from decouple import config
     from shareplum import Site
