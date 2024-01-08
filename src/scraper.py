@@ -54,7 +54,7 @@ def scrap_mercado_publico():
         # elimino repetidos
         coincidencias = list(set(coincidencias))
         # defino mi última variable de data
-        Keywords = coincidencias 
+        Keywords = ', '.join(coincidencias)
         
         if (published.split("T")[0] == "2024-01-06"): # OJO
             licitacion = {
@@ -121,7 +121,7 @@ def main():
     print_licitaciones(licitaciones)
 
     # las escribo en un archivo
-    # write_licitaciones(licitaciones)
+    write_licitaciones(licitaciones)
 
 
 if __name__ == "__main__":
