@@ -13,8 +13,14 @@ def main():
     # Llama a la función 'send_to_sharepoint' para enviar los datos a SharePoint
     send_to_sharepoint(licitaciones)
 
+def end_program():
+    input("Presiona cualquier tecla para finalizar...")
+
+
 # Verifica si este script está siendo ejecutado directamente
 if __name__ == "__main__":
     # Si es así, llama a la función 'main' para iniciar la ejecución del programa
     main()
 
+    # Finalización del programa de consola
+    end_program()
