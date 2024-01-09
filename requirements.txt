@@ -1,0 +1,4 @@
+feedparser==6.0.11
+python-decouple==3.8
+Requests==2.31.0
+SharePlum==0.5.1
