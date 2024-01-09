@@ -1,6 +1,6 @@
-from scraper import scrap_mercado_publico
-from sender import send_to_sharepoint
 def main():
+    from scraper import scrap_mercado_publico
+    from sender import send_to_sharepoint
 
     licitaciones = scrap_mercado_publico()
     

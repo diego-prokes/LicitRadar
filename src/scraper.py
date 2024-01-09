@@ -1,17 +1,15 @@
-import feedparser
-import requests
-from xml.etree import ElementTree as ET
-import re
-from datetime import timedelta
-from datetime import date
-
-n_days = 7
-dates = []
-for i in range(n_days):
-    dates.append(str(date.today()-timedelta(days=i)))
-
-
+# función que hace scrap al feed rss de mercado publico
 def scrap_mercado_publico():
+
+    from licit_tools import get_dates
+    import feedparser
+    import requests
+    import re
+
+    # obtengo las fechas de los últimos <n_days> días
+    n_days = 7
+    dates = get_dates(n_days)
+
     # Url del feed RSS
     rss_url = "https://www.mercadopublico.cl/Portal/feed.aspx?OrgCode=266971"
 
@@ -79,49 +77,10 @@ def scrap_mercado_publico():
     return licitaciones
 
 
-def print_licitaciones(licitaciones):
-    # Imprimir las licitaciones 
-    for licitacion in licitaciones:
-        print("Id           :\t", licitacion["Id"])
-        print("Titulo       :\t", licitacion["Titulo"])
-        print("Comprador    :\t", licitacion["Comprador"])
-        print("Descripcion  :\t", licitacion["Descripcion"])
-        print("Publicacion  :\t", licitacion["Publicacion"])
-        print("Url          :\t", licitacion["Url"])
-        print("Keywords     :\t", licitacion["Keywords"])
-        print()
-
-    # Imprimir cuántas licitaciones del día hay
-    print(len(licitaciones))
-
-
-def write_licitaciones(licitaciones):
-    licitaciones = scrap_mercado_publico()
-
-    # Crear el elemento raíz del árbol XML
-    root = ET.Element("licitaciones")
-
-    for licitacion in licitaciones:
-        # Crear un elemento para cada licitación
-        licitacion_elem = ET.SubElement(root, "licitacion")
-        
-        # Agregar subelementos con la información de la licitación
-        ET.SubElement(licitacion_elem, "Id").text = licitacion["Id"]
-        ET.SubElement(licitacion_elem, "Titulo").text = licitacion["Titulo"]
-        ET.SubElement(licitacion_elem, "Comprador").text = licitacion["Comprador"]
-        ET.SubElement(licitacion_elem, "Descripcion").text = licitacion["Descripcion"]
-        ET.SubElement(licitacion_elem, "Publicacion").text = licitacion["Publicacion"]
-        ET.SubElement(licitacion_elem, "Url").text = licitacion["Url"]
-        ET.SubElement(licitacion_elem, "Keywords").text = licitacion["Keywords"]
-
-    # Crear un árbol a partir del elemento raíz
-    tree = ET.ElementTree(root)
-
-    # Guardar el árbol XML en un archivo
-    tree.write("reports/report_mercado_publico.xml")
-
-
 def main():
+
+    from licit_tools import print_licitaciones, write_licitaciones
+
     # extraigo las licitaciones del día
     licitaciones = scrap_mercado_publico()
 
