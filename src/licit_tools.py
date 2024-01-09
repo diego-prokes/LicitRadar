@@ -1,7 +1,8 @@
-# Imprimir las licitaciones 
+# función para imprimir información sobre las licitaciones
 def print_licitaciones(licitaciones):
-    
+    # itera sobre cada licitación en la lista
     for licitacion in licitaciones:
+        # imprime la información detallada de cada licitación
         print("Id           :\t", licitacion["Id"])
         print("Titulo       :\t", licitacion["Titulo"])
         print("Comprador    :\t", licitacion["Comprador"])
@@ -11,32 +12,33 @@ def print_licitaciones(licitaciones):
         print("Keywords     :\t", licitacion["Keywords"])
         print()
 
-    # Imprimir cuántas licitaciones del día hay
+    # imprime el número total de licitaciones del día
     print(len(licitaciones))
 
+# función para obtener fechas de los últimos n días
 def get_dates(n_days=7):
-
-    from datetime import timedelta
-    from datetime import date
+    from datetime import timedelta, date
 
     dates = []
+    # itera para obtener las fechas de los últimos n días
     for i in range(n_days):
-        dates.append(str(date.today()-timedelta(days=i)))
+        dates.append(str(date.today() - timedelta(days=i)))
 
     return dates
 
+# función para escribir información de licitaciones en un archivo XML
 def write_licitaciones(licitaciones):
-
     from xml.etree import ElementTree as ET
 
-    # Crear el elemento raíz del árbol XML
+    # crea el elemento raíz del árbol XML
     root = ET.Element("licitaciones")
 
+    # itera sobre cada licitación en la lista
     for licitacion in licitaciones:
-        # Crear un elemento para cada licitación
+        # crea un elemento para cada licitación
         licitacion_elem = ET.SubElement(root, "licitacion")
-        
-        # Agregar subelementos con la información de la licitación
+
+        # agrega subelementos con la información de la licitación
         ET.SubElement(licitacion_elem, "Id").text = licitacion["Id"]
         ET.SubElement(licitacion_elem, "Titulo").text = licitacion["Titulo"]
         ET.SubElement(licitacion_elem, "Comprador").text = licitacion["Comprador"]
@@ -45,8 +47,8 @@ def write_licitaciones(licitaciones):
         ET.SubElement(licitacion_elem, "Url").text = licitacion["Url"]
         ET.SubElement(licitacion_elem, "Keywords").text = licitacion["Keywords"]
 
-    # Crear un árbol a partir del elemento raíz
+    # crea un árbol a partir del elemento raíz
     tree = ET.ElementTree(root)
 
-    # Guardar el árbol XML en un archivo
+    # guarda el árbol XML en un archivo
     tree.write("reports/report_mercado_publico.xml")
