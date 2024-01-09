@@ -2,6 +2,13 @@ import feedparser
 import requests
 from xml.etree import ElementTree as ET
 import re
+from datetime import timedelta
+from datetime import date
+
+n_days = 7
+dates = []
+for i in range(n_days):
+    dates.append(str(date.today()-timedelta(days=i)))
 
 
 def scrap_mercado_publico():
@@ -19,7 +26,7 @@ def scrap_mercado_publico():
     licitaciones = []
 
     # Keywords a buscar en el título y descripción
-    keywords = ['aseo clínico', 'aseo industrial', 'bpo', 'candidatos', 'career', 'célula ágil', 'células ágiles',
+    keywords = ['aseo', 'aseo clínico', 'aseo industrial', 'bpo', 'candidatos', 'career', 'célula ágil', 'células ágiles',
                 'cleaning and disinfection', 'desinfección', 'est', 'excel', 'externalización', 'facility', 'guardias', 'hr',
                 'headhunting', 'help desk', 'industrial cleaning', 'it professionals', 'job', 'limpieza y desinfección',
                 'limpieza industrial', 'mantenimiento menor', 'mesa de ayuda', 'mesas de ayuda', 'nivelación', 'outsourcing',
@@ -56,7 +63,8 @@ def scrap_mercado_publico():
         # defino mi última variable de data
         Keywords = ', '.join(coincidencias)
         
-        if (published.split("T")[0] == "2024-01-06"): # OJO
+        # si la fecha de publicación está en el rango de fechas que me interesa:
+        if (Publicacion in dates): # OJO
             licitacion = {
                 "Id"            : Id            ,
                 "Titulo"        : Titulo        ,
