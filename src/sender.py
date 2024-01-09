@@ -1,56 +1,54 @@
+from decouple import config
+from shareplum import Site, Office365
+from shareplum.site import Version
+
 def send_to_sharepoint(licitaciones):
-
-    from decouple import config
-    from shareplum import Site
-    from shareplum import Office365
-    from shareplum.site import Version
-
-    # credenciales de sharepoint
+    """
+    Envía las licitaciones a SharePoint si no existen previamente en la lista especificada.
+    """
+    # Credenciales de SharePoint
     creds = {
-        "username"  :   config('SP_USERNAME'), 
-        "password"  :   config('SP_PASSWORD') 
+        "username": config('SP_USERNAME'),
+        "password": config('SP_PASSWORD')
     }
     
-    # info de la url de la página de sharepoint
+    # Información de la URL de la página de SharePoint
     site_info = {
-        'url_base'  :   config('SP_URL_BASE'),
-        'site_name' :   config('SP_SITE_NAME'),
-        'list_name' :   config('SP_LIST_NAME')
+        'url_base': config('SP_URL_BASE'),
+        'site_name': config('SP_SITE_NAME'),
+        'list_name': config('SP_LIST_NAME')
     }
     
-    # conexión a la página de sharepoint
-    dir = {'url_base':site_info['url_base'], 'site_name':site_info['site_name']}
+    # Conexión a la página de SharePoint
+    dir = {'url_base': site_info['url_base'], 'site_name': site_info['site_name']}
     try:
         authcookie = Office365(dir['url_base'], username=creds["username"], password=creds["password"]).GetCookies()
         site = Site(f"{dir['url_base']}/sites/{dir['site_name']}", version=Version.v2019, authcookie=authcookie)
     except:
         print("FAILED")
 
-    # conexión a la lista de sharepoint que quiero actualizar
-    list = site.List(site_info['list_name'])
+    # Conexión a la lista de SharePoint que se desea actualizar
+    sharepoint_list = site.List(site_info['list_name'])
 
-    # descargo los Id de la lista de sharepoint
-    list_ids = list.GetListItems(fields=["Id"])
-    f_list_ids = []
-    for fli in list_ids:
-        f_list_ids.append(fli["Id"])
+    # Descarga los IDs de la lista de SharePoint
+    list_ids = sharepoint_list.GetListItems(fields=["Id"])
+    f_list_ids = [fli["Id"] for fli in list_ids]
 
-    # preparo la data para ser enviada
-    send_licitaciones = []
-    for licitacion in licitaciones:
-        if licitacion["Id"] not in f_list_ids:
-            send_licitaciones.append(licitacion)
+    # Prepara la data para ser enviada
+    send_licitaciones = [licitacion for licitacion in licitaciones if licitacion["Id"] not in f_list_ids]
 
     print("Licitaciones Enviadas:")
     print_licitaciones(send_licitaciones)
 
-    if send_licitaciones != []:
-        list.UpdateListItems(data=send_licitaciones, kind="New")
+    if send_licitaciones:
+        sharepoint_list.UpdateListItems(data=send_licitaciones, kind="New")
     else:
         print("No hay licitaciones interesantes")
 
 def read_xml_to_dict(xml_file):
-
+    """
+    Lee un archivo XML y retorna una lista de diccionarios con la información de licitaciones.
+    """
     import xml.etree.ElementTree as ET
 
     tree = ET.parse(xml_file)
@@ -73,7 +71,9 @@ def read_xml_to_dict(xml_file):
     return licitaciones
 
 def print_licitaciones(licitaciones):
-    # Imprimir las licitaciones 
+    """
+    Imprime información detallada sobre cada licitación.
+    """
     for licitacion in licitaciones:
         print("Id           :\t", licitacion["Id"])
         print("Titulo       :\t", licitacion["Titulo"])
@@ -85,11 +85,11 @@ def print_licitaciones(licitaciones):
         print()
 
 if __name__ == "__main__":
-    # retorna una lista de diccionarios con el reporte de prueba
+    # Retorna una lista de diccionarios con el reporte de prueba desde el archivo XML
     licitaciones = read_xml_to_dict("reports/report_mercado_publico.xml")
 
-    # # imprimo el diccionario de licitaciones
+    # Imprime el diccionario de licitaciones (comentado para evitar imprimir en cada ejecución)
     # print_licitaciones(licitaciones)
-    
-    # envío la info a sharepoint
+
+    # Envía la información a SharePoint
     send_to_sharepoint(licitaciones)
