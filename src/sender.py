@@ -45,14 +45,11 @@ def send_to_sharepoint(licitaciones):
     if send_licitaciones:
         sharepoint_list.UpdateListItems(data=send_licitaciones, kind="New")
     else:
-        print("No hay licitaciones interesantes")
+        print("No hay licitaciones nuevas")
 
 if __name__ == "__main__":
     # Retorna una lista de diccionarios con el reporte de prueba desde el archivo XML
     licitaciones = read_xml_to_dict("reports/report_mercado_publico.xml")
-
-    # Imprime el diccionario de licitaciones (comentado para evitar imprimir en cada ejecución)
-    # print_licitaciones(licitaciones)
 
     # Envía la información a SharePoint
     send_to_sharepoint(licitaciones)
