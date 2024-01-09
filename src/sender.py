@@ -1,6 +1,8 @@
+# Importaciones
 from decouple import config
 from shareplum import Site, Office365
 from shareplum.site import Version
+from licit_tools import print_licitaciones, read_xml_to_dict
 
 def send_to_sharepoint(licitaciones):
     """
@@ -44,45 +46,6 @@ def send_to_sharepoint(licitaciones):
         sharepoint_list.UpdateListItems(data=send_licitaciones, kind="New")
     else:
         print("No hay licitaciones interesantes")
-
-def read_xml_to_dict(xml_file):
-    """
-    Lee un archivo XML y retorna una lista de diccionarios con la información de licitaciones.
-    """
-    import xml.etree.ElementTree as ET
-
-    tree = ET.parse(xml_file)
-    root = tree.getroot()
-
-    licitaciones = []
-
-    for licitacion_elem in root.findall('licitacion'):
-        licitacion = {
-            "Id": licitacion_elem.find('Id').text,
-            "Titulo": licitacion_elem.find('Titulo').text,
-            "Comprador": licitacion_elem.find('Comprador').text,
-            "Descripcion": licitacion_elem.find('Descripcion').text,
-            "Publicacion": licitacion_elem.find('Publicacion').text,
-            "Url": licitacion_elem.find('Url').text,
-            "Keywords": licitacion_elem.find('Keywords').text,
-        }
-        licitaciones.append(licitacion)
-
-    return licitaciones
-
-def print_licitaciones(licitaciones):
-    """
-    Imprime información detallada sobre cada licitación.
-    """
-    for licitacion in licitaciones:
-        print("Id           :\t", licitacion["Id"])
-        print("Titulo       :\t", licitacion["Titulo"])
-        print("Comprador    :\t", licitacion["Comprador"])
-        print("Descripcion  :\t", licitacion["Descripcion"])
-        print("Publicacion  :\t", licitacion["Publicacion"])
-        print("Url          :\t", licitacion["Url"])
-        print("Keywords     :\t", licitacion["Keywords"])
-        print()
 
 if __name__ == "__main__":
     # Retorna una lista de diccionarios con el reporte de prueba desde el archivo XML

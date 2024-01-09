@@ -63,3 +63,28 @@ def write_licitaciones(licitaciones):
 
     # Guarda el árbol XML en un archivo
     tree.write("reports/report_mercado_publico.xml")
+
+def read_xml_to_dict(xml_file):
+    """
+    Lee un archivo XML y retorna una lista de diccionarios con la información de licitaciones.
+    """
+    import xml.etree.ElementTree as ET
+
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+
+    licitaciones = []
+
+    for licitacion_elem in root.findall('licitacion'):
+        licitacion = {
+            "Id": licitacion_elem.find('Id').text,
+            "Titulo": licitacion_elem.find('Titulo').text,
+            "Comprador": licitacion_elem.find('Comprador').text,
+            "Descripcion": licitacion_elem.find('Descripcion').text,
+            "Publicacion": licitacion_elem.find('Publicacion').text,
+            "Url": licitacion_elem.find('Url').text,
+            "Keywords": licitacion_elem.find('Keywords').text,
+        }
+        licitaciones.append(licitacion)
+
+    return licitaciones
