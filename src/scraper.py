@@ -3,6 +3,7 @@ from licit_tools import get_dates, print_licitaciones, write_licitaciones
 import feedparser
 import requests
 import re
+import json
 
 def scrap_mercado_publico():
     """
@@ -27,14 +28,10 @@ def scrap_mercado_publico():
     licitaciones = []
 
     # Palabras clave a buscar en el título y descripción de las licitaciones
-    keywords = ['aseo', 'aseo clínico', 'aseo industrial', 'bpo', 'candidatos', 'career', 'célula ágil', 'células ágiles',
-                'cleaning and disinfection', 'desinfección', 'est', 'excel', 'externalización', 'facility', 'guardias', 'hr',
-                'headhunting', 'help desk', 'industrial cleaning', 'it professionals', 'job', 'limpieza y desinfección',
-                'limpieza industrial', 'mantenimiento menor', 'mesa de ayuda', 'mesas de ayuda', 'nivelación', 'outsourcing',
-                'placement', 'profesional', 'profesionales it', 'psicolaboral', 'psychometrics', 'reclutamiento', 'recruitment',
-                'selección', 'servicio temporal', 'servicios temporales', 'servicios transitorios', 'sac', 'seguridad física',
-                'soporte', 'staffing', 'talent', 'talent acquisition', 'temporary', 'test de evaluación', 'training',
-                'training programs']
+    with open('keywords/kw_mercado_publico.json', 'r') as config_file:
+        config_data = json.load(config_file)
+
+    keywords = config_data.get('keywords', [])
 
     # Iterar sobre los elementos del feed
     for item in feed.entries:
@@ -92,9 +89,6 @@ def main():
     """
     # Extraer las licitaciones del día
     licitaciones = scrap_mercado_publico()
-
-    # Imprimir las licitaciones en la consola
-    print_licitaciones(licitaciones)
 
     # Escribir las licitaciones en un archivo XML
     write_licitaciones(licitaciones)
