@@ -14,7 +14,7 @@ def main():
     send_to_sharepoint(licitaciones)
 
 def end_program():
-    input("Presiona cualquier enter para finalizar...")
+    input("Presiona enter para finalizar...")
 
 
 # Verifica si este script está siendo ejecutado directamente
