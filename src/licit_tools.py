@@ -1,22 +1,27 @@
 # Función para imprimir información sobre las licitaciones
 def print_licitaciones(licitaciones):
-    """
-    Imprime información detallada sobre cada licitación y el número total de licitaciones del día.
-    """
+    '''
+    Imprime información detallada sobre cada licitación en la lista proporcionada y el número total de licitaciones.
+
+    Parámetros:
+    licitaciones (list): Lista de diccionarios, donde cada diccionario contiene detalles de una licitación.
+
+    Esta función itera sobre cada licitación en la lista, imprimiendo los detalles como Id, Título, Comprador, etc.
+    '''
     # Itera sobre cada licitación en la lista
     for licitacion in licitaciones:
         # Imprime la información detallada de cada licitación
-        print("Id           :\t", licitacion["Id"])
-        print("Titulo       :\t", licitacion["Titulo"])
-        print("Comprador    :\t", licitacion["Comprador"])
-        print("Descripcion  :\t", licitacion["Descripcion"])
-        print("Publicacion  :\t", licitacion["Publicacion"])
-        print("Url          :\t", licitacion["Url"])
-        print("Keywords     :\t", licitacion["Keywords"])
+        print(f"Id           : {licitacion['Id']}")
+        print(f"Titulo       : {licitacion['Titulo']}")
+        print(f"Comprador    : {licitacion['Comprador']}")
+        print(f"Descripcion  : {licitacion['Descripcion']}")
+        print(f"Publicacion  : {licitacion['Publicacion']}")
+        print(f"Url          : {licitacion['Url']}")
+        print(f"Keywords     : {licitacion['Keywords']}")
         print()
 
-    # Imprime el número total de licitaciones del día
-    print(len(licitaciones))
+    # Imprime el número total de licitaciones
+    print(f"Número total de licitaciones: {len(licitaciones)}")
 
 # Función para obtener fechas de los últimos n días
 def get_dates(n_days=7):
@@ -62,7 +67,7 @@ def write_licitaciones(licitaciones):
     tree = ET.ElementTree(root)
 
     # Guarda el árbol XML en un archivo
-    tree.write("reports/report_mercado_publico.xml")
+    tree.write("src/reports/report_mercado_publico.xml")
 
 def read_xml_to_dict(xml_file):
     """
