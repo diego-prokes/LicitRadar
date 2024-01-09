@@ -1,5 +1,5 @@
-Proyecto de Automatización de Licitaciones
-==========================================
+Proyecto de Automatización de Licitaciones (LicitConcentra)
+===========================================================
 
 Descripción
 -----------
