@@ -19,7 +19,7 @@ Configuración y Uso
 
 ### Requisitos Previos
 
-*   Python 3.x
+*   Python 3.10.13
 *   Bibliotecas necesarias: `feedparser`, `requests`, `decouple`, `shareplum`.
 
 ### Configuración
@@ -30,8 +30,3 @@ Configuración y Uso
 ### Ejecución
 
 Para ejecutar el programa, simplemente corre `python main.py` desde la línea de comandos.
-
-### Atribuciones
-Ícono
----------
-El ícono de la aplicación fue sacado de: `https://www.flaticon.es/iconos-gratis/subasta`
