@@ -33,19 +33,39 @@ def send_to_sharepoint(licitaciones):
     sharepoint_list = site.List(site_info['list_name'])
 
     # Descarga los IDs de la lista de SharePoint
-    list_ids = sharepoint_list.GetListItems(fields=["Id","ID"])
-    f_list_ids = [fli["Id"] for fli in list_ids]
+    list_ids = sharepoint_list.GetListItems(fields=["Id", "ID"])
+    dict_ids = {aux["Id"]: aux["ID"] for aux in list_ids}
 
-    # Prepara la data para ser enviada
-    send_licitaciones = [licitacion for licitacion in licitaciones if licitacion["Id"] not in f_list_ids]
+    # Preparar datos para actualización o creación
+    licitaciones_para_actualizar = []
+    licitaciones_para_crear = []
 
-    print("Licitaciones Enviadas:")
-    print_licitaciones(send_licitaciones)
+    for licitacion in licitaciones:
+        if licitacion["Id"] in dict_ids:
+            # La licitación existe, preparar para actualizar
+            # Agregar el ID de SharePoint necesario para la actualización
+            licitacion["ID"] = dict_ids[licitacion["Id"]]
+            licitaciones_para_actualizar.append(licitacion)
+        else:
+            # La licitación es nueva, preparar para crear
+            licitaciones_para_crear.append(licitacion)
 
-    # if send_licitaciones:
-    #     sharepoint_list.UpdateListItems(data=send_licitaciones, kind="New")
-    # else:
-    #     print("No hay licitaciones nuevas")
+    # Procesar las actualizaciones
+    if licitaciones_para_actualizar:
+        sharepoint_list.UpdateListItems(data=licitaciones_para_actualizar, kind="Update")
+        print("Licitaciones Actualizadas:")
+        print_licitaciones(licitaciones_para_actualizar)
+    else:
+        print("No hay licitaciones para actualizar")
+
+    # Procesar las nuevas creaciones
+    if licitaciones_para_crear:
+        sharepoint_list.UpdateListItems(data=licitaciones_para_crear, kind="New")
+        print("Licitaciones Nuevas Enviadas:")
+        print_licitaciones(licitaciones_para_crear)
+    else:
+        print("No hay licitaciones nuevas para enviar")
+
 
 if __name__ == "__main__":
     # Retorna una lista de diccionarios con el reporte de prueba desde el archivo XML
