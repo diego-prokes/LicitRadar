@@ -67,7 +67,7 @@ def write_licitaciones(licitaciones):
     tree = ET.ElementTree(root)
 
     # Guarda el árbol XML en un archivo
-    tree.write("src/reports/report_mercado_publico.xml")
+    tree.write("reports/report_mercado_publico.xml")
 
 def read_xml_to_dict(xml_file):
     """

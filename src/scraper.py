@@ -29,7 +29,7 @@ def scrap_mercado_publico():
         licitaciones = []
 
         # Palabras clave a buscar en el título y descripción de las licitaciones
-        with open('src/keywords/kw_mercado_publico.json', 'r') as config_file:
+        with open('kw_mercado_publico.json', 'r') as config_file:
             config_data = json.load(config_file)
 
         keywords = config_data.get('keywords', [])

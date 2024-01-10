@@ -33,7 +33,7 @@ def send_to_sharepoint(licitaciones):
     sharepoint_list = site.List(site_info['list_name'])
 
     # Descarga los IDs de la lista de SharePoint
-    list_ids = sharepoint_list.GetListItems(fields=["Id"])
+    list_ids = sharepoint_list.GetListItems(fields=["Id","ID"])
     f_list_ids = [fli["Id"] for fli in list_ids]
 
     # Prepara la data para ser enviada
@@ -42,10 +42,10 @@ def send_to_sharepoint(licitaciones):
     print("Licitaciones Enviadas:")
     print_licitaciones(send_licitaciones)
 
-    if send_licitaciones:
-        sharepoint_list.UpdateListItems(data=send_licitaciones, kind="New")
-    else:
-        print("No hay licitaciones nuevas")
+    # if send_licitaciones:
+    #     sharepoint_list.UpdateListItems(data=send_licitaciones, kind="New")
+    # else:
+    #     print("No hay licitaciones nuevas")
 
 if __name__ == "__main__":
     # Retorna una lista de diccionarios con el reporte de prueba desde el archivo XML
