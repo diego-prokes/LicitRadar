@@ -11,7 +11,7 @@ def scrap_mercado_publico():
     que cumplen con ciertas palabras clave.
     '''
     try:
-        print("Scraping...")
+        print("Scraping...\n")
         # Obtener las fechas de los últimos <n_days> días utilizando la función get_dates
         n_days = 7
         dates = get_dates(n_days)
