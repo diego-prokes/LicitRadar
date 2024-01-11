@@ -8,7 +8,7 @@ def send_to_sharepoint(licitaciones):
     """
     Envía las licitaciones a SharePoint si no existen previamente en la lista especificada.
     """
-    print("Realizando conexión a SharePoint")
+    print("Realizando conexión a SharePoint\n")
     # Credenciales de SharePoint
     creds = {
         "username": config('SP_USERNAME'),
@@ -52,7 +52,7 @@ def send_to_sharepoint(licitaciones):
             # La licitación es nueva, preparar para crear
             licitaciones_para_crear.append(licitacion)
 
-    print("Enviando las licitaciones a sharepoint")
+    print("Enviando las licitaciones a sharepoint\n")
     # Procesar las actualizaciones
     if licitaciones_para_actualizar:
         sharepoint_list.UpdateListItems(data=licitaciones_para_actualizar, kind="Update")
@@ -65,7 +65,7 @@ def send_to_sharepoint(licitaciones):
 
     print(f"Se han extraído: {len(licitaciones)} licitaciones")
     print(f"Se han actualizado: {len(licitaciones_para_actualizar)} licitaciones")
-    print(f"Se han creado: {len(licitaciones_para_crear)} licitaciones")
+    print(f"Se han creado: {len(licitaciones_para_crear)} licitaciones\n")
 
 
 
