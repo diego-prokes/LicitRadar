@@ -1,7 +1,7 @@
 # Función para imprimir información sobre las licitaciones
 def print_licitaciones(licitaciones):
     '''
-    Imprime información detallada sobre cada licitación en la lista proporcionada y el número total de licitaciones.
+    Imprime información detallada sobre cada licitación en la lista proporcionada.
 
     Parámetros:
     licitaciones (list): Lista de diccionarios, donde cada diccionario contiene detalles de una licitación.
@@ -19,9 +19,6 @@ def print_licitaciones(licitaciones):
         print(f"Url          : {licitacion['Url']}")
         print(f"Keywords     : {licitacion['Keywords']}")
         print()
-
-    # Imprime el número total de licitaciones
-    print(f"Número total de licitaciones: {len(licitaciones)}")
 
 # Función para obtener fechas de los últimos n días
 def get_dates(n_days=7):

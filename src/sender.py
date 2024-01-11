@@ -53,8 +53,6 @@ def send_to_sharepoint(licitaciones):
     # Procesar las actualizaciones
     if licitaciones_para_actualizar:
         sharepoint_list.UpdateListItems(data=licitaciones_para_actualizar, kind="Update")
-        print("Licitaciones Actualizadas:")
-        print_licitaciones(licitaciones_para_actualizar)
 
     # Procesar las nuevas creaciones
     if licitaciones_para_crear:
@@ -62,6 +60,7 @@ def send_to_sharepoint(licitaciones):
         print("Licitaciones Nuevas Enviadas:")
         print_licitaciones(licitaciones_para_crear)
 
+    print(f"Número han extraído: {len(licitaciones)} licitaciones")
     print(f"Se han actualizado: {len(licitaciones_para_actualizar)} licitaciones")
     print(f"Se han creado: {len(licitaciones_para_crear)} licitaciones")
 
